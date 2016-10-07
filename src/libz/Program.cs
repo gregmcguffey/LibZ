@@ -55,6 +55,7 @@ namespace libz
 	{
 		private static int Main(string[] args)
 		{
+            Console.WriteLine("SHA-1 Hash used.");
 			try
 			{
 				return LibZResolver.Startup(() => {
