@@ -34,7 +34,7 @@
     <DocumentationFile>bin\Release\LibZ.Bootstrap.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\LibZ.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>

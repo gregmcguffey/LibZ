@@ -33,7 +33,7 @@
     <DocumentationFile>bin\Release\LibZ.Tool.Interfaces.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\LibZ.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>

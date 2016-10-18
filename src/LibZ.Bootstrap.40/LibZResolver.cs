@@ -90,20 +90,20 @@ namespace LibZ.Bootstrap
 #endif
 {
 
-	#region declare visibility
+    #region declare visibility
 
 #if LIBZ_MANAGER
 
-	// in LibZ.Manager all clases are actually interface classes
+    // in LibZ.Manager all clases are actually interface classes
 
-	// internal partial class LibZResolver { };
+    // internal partial class LibZResolver { };
 
-	namespace Internal
-	{
-		public partial class LibZEntry { };
+    namespace Internal
+    {
+        public partial class LibZEntry { };
 
-		public partial class LibZReader { };
-	}
+        public partial class LibZReader { };
+    }
 
 #elif LIBZ_BOOTSTRAP
 
@@ -132,16 +132,16 @@ namespace LibZ.Bootstrap
 
 #endif
 
-	#endregion
+    #endregion
 
 #if !LIBZ_MANAGER
 
-	#region class LibZResolver
+    #region class LibZResolver
 
 	/// <summary>Assembly resolver and repository of .libz files.</summary>
 	partial class LibZResolver
 	{
-		#region consts
+    #region consts
 
 		/// <summary>
 		///     Regular expression for embedded containers.
@@ -152,9 +152,9 @@ namespace LibZ.Bootstrap
 
 		private const StringComparison IgnoreCase = StringComparison.OrdinalIgnoreCase;
 
-		#endregion
+    #endregion
 
-		#region static fields
+    #region static fields
 
 		/*
 		 * NOTE: This fields are populated ONLY by first caller.
@@ -169,9 +169,9 @@ namespace LibZ.Bootstrap
 
 		private static readonly Dictionary<Guid, Assembly> LoadedAssemblies;
 
-		#endregion
+    #endregion
 
-		#region shared static properies
+    #region shared static properies
 
 		/// <summary>The shared dictionary.</summary>
 		private static readonly GlobalDictionary SharedData =
@@ -224,9 +224,9 @@ namespace LibZ.Bootstrap
 
 #endif
 
-		#endregion
+    #endregion
 
-		#region static constructor
+    #region static constructor
 
 		/// <summary>
 		///     Initializes the <see cref="LibZResolver" /> class.
@@ -331,9 +331,9 @@ namespace LibZ.Bootstrap
 
 #endif
 
-		#endregion
+    #endregion
 
-		#region public interface
+    #region public interface
 
 		/// <summary>
 		///     Application startup. It is used to postpone assembly loading until
@@ -580,9 +580,9 @@ namespace LibZ.Bootstrap
 			}
 		}
 
-		#endregion
+    #endregion
 
-		#region private implementation
+    #region private implementation
 
 		private static bool IsEmptyString(string text)
 		{
@@ -593,7 +593,7 @@ namespace LibZ.Bootstrap
 #endif
 		}
 
-		#region resolve
+    #region resolve
 
 		/// <summary>Tries to load missing assembly from LibZ containers.</summary>
 		/// <param name="args">
@@ -826,9 +826,9 @@ namespace LibZ.Bootstrap
 			return Assembly.LoadFrom(filePath);
 		}
 
-		#endregion
+    #endregion
 
-		#region find files
+    #region find files
 
 		/// <summary>Finds the file on search path.</summary>
 		/// <param name="libzFileName">Name of the libz file.</param>
@@ -845,816 +845,913 @@ namespace LibZ.Bootstrap
 				.FirstOrDefault(File.Exists);
 		}
 
-		#endregion
+    #endregion
 
-		#endregion
+    #endregion
 	}
 
-	#endregion
+    #endregion
 
 #endif
 
-	namespace Internal
-	{
-		#region class LibZReader
+    namespace Internal
+    {
+        #region class LibZReader
 
-		#region class Entry
+        #region class Entry
 
-		/// <summary>Single container entry.</summary>
-		partial class LibZEntry
-		{
-			#region enum EntryFlags
-
-			/// <summary>Flags on every entry in container.</summary>
-			[Flags]
-			public enum EntryFlags
-			{
-				/// <summary>None.</summary>
-				None = 0x00,
+        /// <summary>Single container entry.</summary>
+        partial class LibZEntry
+        {
+            #region enum EntryFlags
+
+            /// <summary>Flags on every entry in container.</summary>
+            [Flags]
+            public enum EntryFlags
+            {
+                /// <summary>None.</summary>
+                None = 0x00,
 
-				/// <summary>Indicates unamanged assembly.</summary>
-				Unmanaged = 0x01,
+                /// <summary>Indicates unamanged assembly.</summary>
+                Unmanaged = 0x01,
 
-				/// <summary>Set when assembly is targeting AnyCPU architecture.</summary>
-				AnyCPU = 0x02,
+                /// <summary>Set when assembly is targeting AnyCPU architecture.</summary>
+                AnyCPU = 0x02,
 
-				/// <summary>Set when assembly is targeting 64-bit architectule.</summary>
-				X64 = 0x04,
+                /// <summary>Set when assembly is targeting 64-bit architectule.</summary>
+                X64 = 0x04,
 
-				/// <summary>Indicates PCL assembly.</summary>
-				Portable = 0x08,
+                /// <summary>Indicates PCL assembly.</summary>
+                Portable = 0x08,
 
-				/// <summary>The flag indicating the 'safe load' should be used.</summary>
-				SafeLoad = 0x10,
-			}
+                /// <summary>The flag indicating the 'safe load' should be used.</summary>
+                SafeLoad = 0x10,
+            }
 
-			#endregion
+            #endregion
 
-			#region stored properties
+            #region stored properties
 
-			/// <summary>Gets or sets the hash.</summary>
-			/// <value>The hash.</value>
-			public Guid Id { get; protected internal set; }
+            /// <summary>Gets or sets the hash.</summary>
+            /// <value>The hash.</value>
+            public Guid Id { get; protected internal set; }
 
-			/// <summary>Gets or sets the name of the assembly.</summary>
-			/// <value>The name of the assembly.</value>
-			public AssemblyName AssemblyName { get; protected internal set; }
+            /// <summary>Gets or sets the name of the assembly.</summary>
+            /// <value>The name of the assembly.</value>
+            public AssemblyName AssemblyName { get; protected internal set; }
 
-			/// <summary>Gets or sets the flags.</summary>
-			/// <value>The flags.</value>
-			public EntryFlags Flags { get; protected internal set; }
+            /// <summary>Gets or sets the flags.</summary>
+            /// <value>The flags.</value>
+            public EntryFlags Flags { get; protected internal set; }
 
-			/// <summary>Gets or sets the offset.</summary>
-			/// <value>The offset.</value>
-			public long Offset { get; protected internal set; }
+            /// <summary>Gets or sets the offset.</summary>
+            /// <value>The offset.</value>
+            public long Offset { get; protected internal set; }
 
-			/// <summary>Gets or sets the length of the original stream.</summary>
-			/// <value>The length of the original stream.</value>
-			public int OriginalLength { get; protected internal set; }
+            /// <summary>Gets or sets the length of the original stream.</summary>
+            /// <value>The length of the original stream.</value>
+            public int OriginalLength { get; protected internal set; }
 
-			/// <summary>Gets or sets the length of the storage.</summary>
-			/// <value>The length of the storage.</value>
-			public int StorageLength { get; protected internal set; }
+            /// <summary>Gets or sets the length of the storage.</summary>
+            /// <value>The length of the storage.</value>
+            public int StorageLength { get; protected internal set; }
 
-			/// <summary>Gets or sets the codec name.</summary>
-			/// <value>The codec name.</value>
-			public string CodecName { get; protected internal set; }
+            /// <summary>Gets or sets the codec name.</summary>
+            /// <value>The codec name.</value>
+            public string CodecName { get; protected internal set; }
 
-			/// <summary>MD5 hash.</summary>
-			/// <value>The MD5 hash.</value>
-			public Guid Hash { get; protected internal set; }
+            /// <summary>Guid based on SHA-1 hash.</summary>
+            /// <value>Guid.</value>
+            public Guid Hash { get; protected internal set; }
 
-			#endregion
+            #endregion
 
-			#region derived properties
+            #region derived properties
 
-			/// <summary>Gets a value indicating whether assembly is unmanaged.</summary>
-			/// <value><c>true</c> if unmanaged; otherwise, <c>false</c>.</value>
-			public bool Unmanaged { get { return (Flags & EntryFlags.Unmanaged) != 0; } }
+            /// <summary>Gets a value indicating whether assembly is unmanaged.</summary>
+            /// <value><c>true</c> if unmanaged; otherwise, <c>false</c>.</value>
+            public bool Unmanaged { get { return (Flags & EntryFlags.Unmanaged) != 0; } }
 
-			/// <summary>Gets a value indicating whether assembly is portable.</summary>
-			/// <value><c>true</c> if portable; otherwise, <c>false</c>.</value>
-			public bool Portable { get { return (Flags & EntryFlags.Portable) != 0; } }
+            /// <summary>Gets a value indicating whether assembly is portable.</summary>
+            /// <value><c>true</c> if portable; otherwise, <c>false</c>.</value>
+            public bool Portable { get { return (Flags & EntryFlags.Portable) != 0; } }
 
-			/// <summary>Gets a value indicating whether 'safe load' have to be forced.</summary>
-			/// <value><c>true</c> if 'safe load' is required; otherwise, <c>false</c>.</value>
-			public bool SafeLoad { get { return (Flags & EntryFlags.SafeLoad) != 0; } }
+            /// <summary>Gets a value indicating whether 'safe load' have to be forced.</summary>
+            /// <value><c>true</c> if 'safe load' is required; otherwise, <c>false</c>.</value>
+            public bool SafeLoad { get { return (Flags & EntryFlags.SafeLoad) != 0; } }
 
-			#endregion
+            #endregion
 
-			#region constructor
+            #region constructor
 
-			/// <summary>
-			///     Initializes a new instance of the <see cref="LibZEntry" /> class.
-			/// </summary>
-			public LibZEntry() { }
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="LibZEntry" /> class.
+            /// </summary>
+            public LibZEntry() { }
 
-			/// <summary>
-			///     Initializes a new instance of the <see cref="LibZEntry" /> class.
-			///     Copies all field from other object.
-			/// </summary>
-			/// <param name="other">The other entry.</param>
-			public LibZEntry(LibZEntry other)
-			{
-				Id = other.Id;
-				Hash = other.Hash;
-				AssemblyName = other.AssemblyName;
-				Flags = other.Flags;
-				Offset = other.Offset;
-				OriginalLength = other.OriginalLength;
-				StorageLength = other.StorageLength;
-				CodecName = other.CodecName;
-			}
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="LibZEntry" /> class.
+            ///     Copies all field from other object.
+            /// </summary>
+            /// <param name="other">The other entry.</param>
+            public LibZEntry(LibZEntry other)
+            {
+                Id = other.Id;
+                Hash = other.Hash;
+                AssemblyName = other.AssemblyName;
+                Flags = other.Flags;
+                Offset = other.Offset;
+                OriginalLength = other.OriginalLength;
+                StorageLength = other.StorageLength;
+                CodecName = other.CodecName;
+            }
 
-			#endregion
-		}
+            #endregion
+        }
 
-		#endregion
+        #endregion
 
-		/// <summary>LibZ file container. Read-only aspect.</summary>
-		partial class LibZReader: IDisposable
-		{
-			#region consts
+        /// <summary>LibZ file container. Read-only aspect.</summary>
+        partial class LibZReader : IDisposable
+        {
+            #region consts
 
-			/// <summary>The magic identifer on container files.</summary>
-			protected static readonly Guid Magic = new Guid(Encoding.ASCII.GetBytes("LibZContainer103"));
+            /// <summary>The magic identifer on container files.</summary>
+            protected static readonly Guid Magic = new Guid(Encoding.ASCII.GetBytes("LibZContainer103"));
 
-			/// <summary>The version of container format.</summary>
-			protected const int CurrentVersion = 103;
+            /// <summary>The version of container format.</summary>
+            protected const int CurrentVersion = 103;
 
-			/// <summary>The length of GUID</summary>
-			protected static readonly int GuidLength = Guid.Empty.ToByteArray().Length; // that's nasty, but reliable
-
-			#endregion
-
-			#region static fields
-
-			/// <summary>The registered decoders.</summary>
-			private static readonly Dictionary<string, Func<byte[], int, byte[]>> Decoders
-				= new Dictionary<string, Func<byte[], int, byte[]>>();
-
-			#endregion
-
-			#region fields
-
-			// ReSharper disable InconsistentNaming
-
-			/// <summary>The container id</summary>
-			protected Guid _containerId = Guid.Empty;
-
-			/// <summary>The offset where metadata starts.</summary>
-			protected long _magicOffset;
-
-			/// <summary>The actual version of container file format.</summary>
-			private int _version;
-
-			/// <summary>The map of entries.</summary>
-			protected Dictionary<Guid, LibZEntry> _entries = new Dictionary<Guid, LibZEntry>();
-
-			/// <summary>The container stream.</summary>
-			protected Stream _stream;
-
-			/// <summary>The binary reader.</summary>
-			protected BinaryReader _reader;
-
-			/// <summary>Indicates if object has been already disposed.</summary>
-			private bool _disposed;
-
-			// ReSharper restore InconsistentNaming
-
-			#endregion
-
-			#region properties
-
-			/// <summary>Gets the container id.</summary>
-			/// <value>The container id.</value>
-			public Guid ContainerId
-			{
-				get { return _containerId; }
-			}
-
-			/// <summary>Gets the entries in the container.</summary>
-			public IEnumerable<LibZEntry> Entries
-			{
-				get { return _entries.Values; }
-			}
-
-			#endregion
-
-			#region static constructor
-
-			/// <summary>
-			///     Initializes the <see cref="LibZReader" /> class.
-			/// </summary>
-			static LibZReader()
-			{
-				RegisterDecoder("deflate", DeflateDecoder);
-			}
-
-			#endregion
-
-			#region constructor
-
-			/// <summary>
-			///     Initializes a new instance of the <see cref="LibZReader" /> class.
-			/// </summary>
-			protected LibZReader() { }
-
-			/// <summary>
-			///     Initializes a new instance of the <see cref="LibZReader" /> class.
-			/// </summary>
-			/// <param name="stream">The stream.</param>
-			public LibZReader(Stream stream)
-			{
-				_stream = stream;
-				_reader = new BinaryReader(_stream);
-				OpenFile();
-			}
-
-			/// <summary>Opens the file.</summary>
-			/// <exception cref="System.ArgumentException">Container file seems to be corrupted.</exception>
-			/// <exception cref="System.NotSupportedException">Not supported version of container file.</exception>
-			protected void OpenFile()
-			{
-				lock (_stream)
-				{
-					_stream.Position = 0;
-					var guid = new Guid(_reader.ReadBytes(GuidLength));
-					if (guid != Magic)
-						throw new ArgumentException("Invalid LibZ file header");
-					_version = _reader.ReadInt32();
-					if (_version != CurrentVersion)
-						throw new NotSupportedException(
-							string.Format("Unsupported LibZ file version ({0})", _version));
-					_stream.Position = _stream.Length - GuidLength - sizeof(long);
-					_magicOffset = _reader.ReadInt64();
-					guid = new Guid(_reader.ReadBytes(GuidLength));
-					if (guid != Magic)
-						throw new ArgumentException("Invalid LibZ file footer");
-					_stream.Position = _magicOffset;
-					_containerId = new Guid(_reader.ReadBytes(GuidLength));
-					var count = _reader.ReadInt32();
-					for (var i = 0; i < count; i++)
-					{
-						var entry = ReadEntry(_reader);
-						_entries.Add(entry.Id, entry);
-					}
-				}
-			}
-
-			#endregion
-
-			#region public interface
-
-			/// <summary>Registers the decoder.</summary>
-			/// <param name="codecName">The codec name.</param>
-			/// <param name="decoder">The decoder.</param>
-			/// <param name="overwrite">
-			///     if set to <c>true</c> overwrites previously registered decoder.
-			///     Useful when decoder has multiple versions (for example safe and unsafe one) but at startup
-			///     we have access to only one of them.
-			/// </param>
-			/// <exception cref="System.ArgumentException">codecName is null or empty</exception>
-			/// <exception cref="System.ArgumentNullException">decoder is null.</exception>
-			public static void RegisterDecoder(string codecName, Func<byte[], int, byte[]> decoder, bool overwrite = false)
-			{
-				if (String.IsNullOrEmpty(codecName))
-					throw Helpers.Error(new ArgumentException("codecName is null or empty.", "codecName"));
-				if (decoder == null)
-					throw Helpers.Error(new ArgumentNullException("decoder", "decoder is null."));
-
-				var decoders = Decoders;
-
-				if (overwrite)
-				{
-					lock (decoders)
-						decoders[codecName] = decoder;
-				}
-				else
-				{
-					try
-					{
-						lock (decoders)
-							decoders.Add(codecName, decoder);
-					}
-					catch (ArgumentException e)
-					{
-						throw Helpers.Error(new ArgumentException(
-							string.Format("Codec '{0}' already registered", codecName), e));
-					}
-				}
-			}
-
-			/// <summary>Tries the get entry.</summary>
-			/// <param name="guid">The GUID.</param>
-			/// <returns>
-			///     Entry with specified GUID or <c>null</c>.
-			/// </returns>
-			public LibZEntry TryGetEntry(Guid guid)
-			{
-				LibZEntry result;
-				_entries.TryGetValue(guid, out result);
-				return result;
-			}
-
-			/// <summary>Gets the bytes for given resource.</summary>
-			/// <param name="entry">The entry.</param>
-			/// <param name="decoders">The decoders.</param>
-			/// <returns>Buffer of bytes.</returns>
-			public byte[] GetBytes(LibZEntry entry, IDictionary<string, Func<byte[], int, byte[]>> decoders = null)
-			{
-				byte[] buffer;
-
-				lock (_stream)
-				{
-					buffer = ReadBytes(_stream, entry.Offset, entry.StorageLength);
-				}
-
-				// this needs to be outside lock!
-				return Decode(entry.CodecName, buffer, entry.OriginalLength, decoders ?? Decoders);
-			}
-
-			#endregion
-
-			#region private implementation
-
-			/// <summary>Decodes the specified data.</summary>
-			/// <param name="codecName">Name of the codec.</param>
-			/// <param name="data">The data.</param>
-			/// <param name="outputLength">Length of the output.</param>
-			/// <param name="decoders">The decoders dictionary.</param>
-			/// <returns>Decoded data.</returns>
-			private static byte[] Decode(
-				string codecName, byte[] data, int outputLength,
-				IDictionary<string, Func<byte[], int, byte[]>> decoders)
-			{
-				if (string.IsNullOrEmpty(codecName))
-					return data;
-				Func<byte[], int, byte[]> decoder;
-				lock (decoders)
-				{
-					if (!decoders.TryGetValue(codecName, out decoder))
-						throw Helpers.Error(new ArgumentException(
-							string.Format("Codec '{0}' is not registered", codecName)));
-				}
-				return decoder(data, outputLength);
-			}
-
-			private static LibZEntry ReadEntry(BinaryReader reader)
-			{
-				return new LibZEntry {
-					Id = new Guid(reader.ReadBytes(GuidLength)),
-					AssemblyName = new AssemblyName(reader.ReadString()),
-					Hash = new Guid(reader.ReadBytes(GuidLength)),
-					Flags = (LibZEntry.EntryFlags)reader.ReadInt32(),
-					Offset = reader.ReadInt64(),
-					OriginalLength = reader.ReadInt32(),
-					StorageLength = reader.ReadInt32(),
-					CodecName = reader.ReadString(),
-				};
-			}
-
-			#endregion
-
-			#region utility
-
-			/// <summary>No-compression decoder.</summary>
-			/// <param name="input">The input.</param>
-			/// <param name="outputLength">Length of the output.</param>
-			/// <returns>Input.</returns>
-			internal static byte[] NoneDecoder(byte[] input, int outputLength)
-			{
-				return input;
-			}
-
-			/// <summary>Deflate decoder implementation.</summary>
-			/// <param name="input">The input.</param>
-			/// <param name="outputLength">Length of the output.</param>
-			/// <returns>Decodec bytes.</returns>
-			internal static byte[] DeflateDecoder(byte[] input, int outputLength)
-			{
-				using (var mstream = new MemoryStream(input))
-				using (var zstream = new DeflateStream(mstream, CompressionMode.Decompress))
-				{
-					return ReadBytes(zstream, -1, outputLength);
-				}
-			}
-
-			/// <summary>Reads the buffer from stream.</summary>
-			/// <param name="stream">The stream.</param>
-			/// <param name="position">The position (does not change is value is negativge).</param>
-			/// <param name="length">The length.</param>
-			/// <returns>Buffer of bytes.</returns>
-			/// <exception cref="System.IO.IOException">LibZ container is corrupted</exception>
-			protected static byte[] ReadBytes(Stream stream, long position, int length)
-			{
-				var result = new byte[length];
-				if (position >= 0)
-					stream.Position = position;
-				var read = stream.Read(result, 0, length);
-				if (read < length)
-					throw new IOException("LibZ container is corrupted");
-				return result;
-			}
-
-			#endregion
-
-			#region IDisposable Members
-
-			/// <summary>
-			///     Releases unmanaged resources and performs other cleanup operations before the
-			///     object is reclaimed by garbage collection.
-			/// </summary>
-			~LibZReader()
-			{
-				Dispose(false);
-			}
-
-			/// <summary>
-			///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-			/// </summary>
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			/// <summary>
-			///     Releases unmanaged and - optionally - managed resources
-			/// </summary>
-			/// <param name="disposing">
-			///     <c>true</c> to release both managed and unmanaged resources;
-			///     <c>false</c> to release only unmanaged resources.
-			/// </param>
-			private void Dispose(bool disposing)
-			{
-				if (_disposed)
-					return;
-
-				try
-				{
-					if (disposing)
-						DisposeManaged();
-					DisposeUnmanaged();
-				}
-				finally
-				{
-					_disposed = true;
-				}
-			}
-
-			/// <summary>Disposes the managed resources.</summary>
-			protected virtual void DisposeManaged()
-			{
-				TryDispose(ref _reader);
-				TryDispose(ref _stream);
-				_entries = null;
-			}
-
-			/// <summary>Disposes the unmanaged resources.</summary>
-			protected virtual void DisposeUnmanaged()
-			{
-				// do nothing
-			}
-
-			/// <summary>Tries the dispose and object.</summary>
-			/// <typeparam name="T">Type of variable.</typeparam>
-			/// <param name="subject">The subject.</param>
-			protected static void TryDispose<T>(ref T subject) where T: class
-			{
-				var disposable = subject as IDisposable;
-				if (ReferenceEquals(disposable, null))
-					return;
-				disposable.Dispose();
-				subject = null;
-			}
-
-			#endregion
-		}
-
-		#endregion
-
-		#region class LibZCatalog
+            /// <summary>The length of GUID</summary>
+            protected static readonly int GuidLength = Guid.Empty.ToByteArray().Length; // that's nasty, but reliable
+
+            #endregion
+
+            #region static fields
+
+            /// <summary>The registered decoders.</summary>
+            private static readonly Dictionary<string, Func<byte[], int, byte[]>> Decoders
+                = new Dictionary<string, Func<byte[], int, byte[]>>();
+
+            #endregion
+
+            #region fields
+
+            // ReSharper disable InconsistentNaming
+
+            /// <summary>The container id</summary>
+            protected Guid _containerId = Guid.Empty;
+
+            /// <summary>The offset where metadata starts.</summary>
+            protected long _magicOffset;
+
+            /// <summary>The actual version of container file format.</summary>
+            private int _version;
+
+            /// <summary>The map of entries.</summary>
+            protected Dictionary<Guid, LibZEntry> _entries = new Dictionary<Guid, LibZEntry>();
+
+            /// <summary>The container stream.</summary>
+            protected Stream _stream;
+
+            /// <summary>The binary reader.</summary>
+            protected BinaryReader _reader;
+
+            /// <summary>Indicates if object has been already disposed.</summary>
+            private bool _disposed;
+
+            // ReSharper restore InconsistentNaming
+
+            #endregion
+
+            #region properties
+
+            /// <summary>Gets the container id.</summary>
+            /// <value>The container id.</value>
+            public Guid ContainerId
+            {
+                get { return _containerId; }
+            }
+
+            /// <summary>Gets the entries in the container.</summary>
+            public IEnumerable<LibZEntry> Entries
+            {
+                get { return _entries.Values; }
+            }
+
+            #endregion
+
+            #region static constructor
+
+            /// <summary>
+            ///     Initializes the <see cref="LibZReader" /> class.
+            /// </summary>
+            static LibZReader()
+            {
+                RegisterDecoder("deflate", DeflateDecoder);
+            }
+
+            #endregion
+
+            #region constructor
+
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="LibZReader" /> class.
+            /// </summary>
+            protected LibZReader() { }
+
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="LibZReader" /> class.
+            /// </summary>
+            /// <param name="stream">The stream.</param>
+            public LibZReader(Stream stream)
+            {
+                _stream = stream;
+                _reader = new BinaryReader(_stream);
+                OpenFile();
+            }
+
+            /// <summary>Opens the file.</summary>
+            /// <exception cref="System.ArgumentException">Container file seems to be corrupted.</exception>
+            /// <exception cref="System.NotSupportedException">Not supported version of container file.</exception>
+            protected void OpenFile()
+            {
+                lock (_stream)
+                {
+                    _stream.Position = 0;
+                    var guid = new Guid(_reader.ReadBytes(GuidLength));
+                    if (guid != Magic)
+                        throw new ArgumentException("Invalid LibZ file header");
+                    _version = _reader.ReadInt32();
+                    if (_version != CurrentVersion)
+                        throw new NotSupportedException(
+                            string.Format("Unsupported LibZ file version ({0})", _version));
+                    _stream.Position = _stream.Length - GuidLength - sizeof(long);
+                    _magicOffset = _reader.ReadInt64();
+                    guid = new Guid(_reader.ReadBytes(GuidLength));
+                    if (guid != Magic)
+                        throw new ArgumentException("Invalid LibZ file footer");
+                    _stream.Position = _magicOffset;
+                    _containerId = new Guid(_reader.ReadBytes(GuidLength));
+                    var count = _reader.ReadInt32();
+                    for (var i = 0; i < count; i++)
+                    {
+                        var entry = ReadEntry(_reader);
+                        _entries.Add(entry.Id, entry);
+                    }
+                }
+            }
+
+            #endregion
+
+            #region public interface
+
+            /// <summary>Registers the decoder.</summary>
+            /// <param name="codecName">The codec name.</param>
+            /// <param name="decoder">The decoder.</param>
+            /// <param name="overwrite">
+            ///     if set to <c>true</c> overwrites previously registered decoder.
+            ///     Useful when decoder has multiple versions (for example safe and unsafe one) but at startup
+            ///     we have access to only one of them.
+            /// </param>
+            /// <exception cref="System.ArgumentException">codecName is null or empty</exception>
+            /// <exception cref="System.ArgumentNullException">decoder is null.</exception>
+            public static void RegisterDecoder(string codecName, Func<byte[], int, byte[]> decoder, bool overwrite = false)
+            {
+                if (String.IsNullOrEmpty(codecName))
+                    throw Helpers.Error(new ArgumentException("codecName is null or empty.", "codecName"));
+                if (decoder == null)
+                    throw Helpers.Error(new ArgumentNullException("decoder", "decoder is null."));
+
+                var decoders = Decoders;
+
+                if (overwrite)
+                {
+                    lock (decoders)
+                        decoders[codecName] = decoder;
+                }
+                else
+                {
+                    try
+                    {
+                        lock (decoders)
+                            decoders.Add(codecName, decoder);
+                    }
+                    catch (ArgumentException e)
+                    {
+                        throw Helpers.Error(new ArgumentException(
+                            string.Format("Codec '{0}' already registered", codecName), e));
+                    }
+                }
+            }
+
+            /// <summary>Tries the get entry.</summary>
+            /// <param name="guid">The GUID.</param>
+            /// <returns>
+            ///     Entry with specified GUID or <c>null</c>.
+            /// </returns>
+            public LibZEntry TryGetEntry(Guid guid)
+            {
+                LibZEntry result;
+                _entries.TryGetValue(guid, out result);
+                return result;
+            }
+
+            /// <summary>Gets the bytes for given resource.</summary>
+            /// <param name="entry">The entry.</param>
+            /// <param name="decoders">The decoders.</param>
+            /// <returns>Buffer of bytes.</returns>
+            public byte[] GetBytes(LibZEntry entry, IDictionary<string, Func<byte[], int, byte[]>> decoders = null)
+            {
+                byte[] buffer;
+
+                lock (_stream)
+                {
+                    buffer = ReadBytes(_stream, entry.Offset, entry.StorageLength);
+                }
+
+                // this needs to be outside lock!
+                return Decode(entry.CodecName, buffer, entry.OriginalLength, decoders ?? Decoders);
+            }
+
+            #endregion
+
+            #region private implementation
+
+            /// <summary>Decodes the specified data.</summary>
+            /// <param name="codecName">Name of the codec.</param>
+            /// <param name="data">The data.</param>
+            /// <param name="outputLength">Length of the output.</param>
+            /// <param name="decoders">The decoders dictionary.</param>
+            /// <returns>Decoded data.</returns>
+            private static byte[] Decode(
+                string codecName, byte[] data, int outputLength,
+                IDictionary<string, Func<byte[], int, byte[]>> decoders)
+            {
+                if (string.IsNullOrEmpty(codecName))
+                    return data;
+                Func<byte[], int, byte[]> decoder;
+                lock (decoders)
+                {
+                    if (!decoders.TryGetValue(codecName, out decoder))
+                        throw Helpers.Error(new ArgumentException(
+                            string.Format("Codec '{0}' is not registered", codecName)));
+                }
+                return decoder(data, outputLength);
+            }
+
+            private static LibZEntry ReadEntry(BinaryReader reader)
+            {
+                return new LibZEntry
+                {
+                    Id = new Guid(reader.ReadBytes(GuidLength)),
+                    AssemblyName = new AssemblyName(reader.ReadString()),
+                    Hash = new Guid(reader.ReadBytes(GuidLength)),
+                    Flags = (LibZEntry.EntryFlags)reader.ReadInt32(),
+                    Offset = reader.ReadInt64(),
+                    OriginalLength = reader.ReadInt32(),
+                    StorageLength = reader.ReadInt32(),
+                    CodecName = reader.ReadString(),
+                };
+            }
+
+            #endregion
+
+            #region utility
+
+            /// <summary>No-compression decoder.</summary>
+            /// <param name="input">The input.</param>
+            /// <param name="outputLength">Length of the output.</param>
+            /// <returns>Input.</returns>
+            internal static byte[] NoneDecoder(byte[] input, int outputLength)
+            {
+                return input;
+            }
+
+            /// <summary>Deflate decoder implementation.</summary>
+            /// <param name="input">The input.</param>
+            /// <param name="outputLength">Length of the output.</param>
+            /// <returns>Decodec bytes.</returns>
+            internal static byte[] DeflateDecoder(byte[] input, int outputLength)
+            {
+                using (var mstream = new MemoryStream(input))
+                using (var zstream = new DeflateStream(mstream, CompressionMode.Decompress))
+                {
+                    return ReadBytes(zstream, -1, outputLength);
+                }
+            }
+
+            /// <summary>Reads the buffer from stream.</summary>
+            /// <param name="stream">The stream.</param>
+            /// <param name="position">The position (does not change is value is negativge).</param>
+            /// <param name="length">The length.</param>
+            /// <returns>Buffer of bytes.</returns>
+            /// <exception cref="System.IO.IOException">LibZ container is corrupted</exception>
+            protected static byte[] ReadBytes(Stream stream, long position, int length)
+            {
+                var result = new byte[length];
+                if (position >= 0)
+                    stream.Position = position;
+                var read = stream.Read(result, 0, length);
+                if (read < length)
+                    throw new IOException("LibZ container is corrupted");
+                return result;
+            }
+
+            #endregion
+
+            #region IDisposable Members
+
+            /// <summary>
+            ///     Releases unmanaged resources and performs other cleanup operations before the
+            ///     object is reclaimed by garbage collection.
+            /// </summary>
+            ~LibZReader()
+            {
+                Dispose(false);
+            }
+
+            /// <summary>
+            ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            /// <summary>
+            ///     Releases unmanaged and - optionally - managed resources
+            /// </summary>
+            /// <param name="disposing">
+            ///     <c>true</c> to release both managed and unmanaged resources;
+            ///     <c>false</c> to release only unmanaged resources.
+            /// </param>
+            private void Dispose(bool disposing)
+            {
+                if (_disposed)
+                    return;
+
+                try
+                {
+                    if (disposing)
+                        DisposeManaged();
+                    DisposeUnmanaged();
+                }
+                finally
+                {
+                    _disposed = true;
+                }
+            }
+
+            /// <summary>Disposes the managed resources.</summary>
+            protected virtual void DisposeManaged()
+            {
+                TryDispose(ref _reader);
+                TryDispose(ref _stream);
+                _entries = null;
+            }
+
+            /// <summary>Disposes the unmanaged resources.</summary>
+            protected virtual void DisposeUnmanaged()
+            {
+                // do nothing
+            }
+
+            /// <summary>Tries the dispose and object.</summary>
+            /// <typeparam name="T">Type of variable.</typeparam>
+            /// <param name="subject">The subject.</param>
+            protected static void TryDispose<T>(ref T subject) where T : class
+            {
+                var disposable = subject as IDisposable;
+                if (ReferenceEquals(disposable, null))
+                    return;
+                disposable.Dispose();
+                subject = null;
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        #region class LibZCatalog
 
 #if !NET35
 
-		/// <summary>Catalog (in MEF sense) for given LibZReader.</summary>
-		internal class LibZCatalog: ComposablePartCatalog
-		{
-			#region fields
+        /// <summary>Catalog (in MEF sense) for given LibZReader.</summary>
+        internal class LibZCatalog : ComposablePartCatalog
+        {
+            #region fields
 
-			/// <summary>The reader.</summary>
-			private readonly LibZReader _reader;
+            /// <summary>The reader.</summary>
+            private readonly LibZReader _reader;
 
-			/// <summary>Flag indicating that catalog has been initialized.</summary>
-			private int _initialized;
+            /// <summary>Flag indicating that catalog has been initialized.</summary>
+            private int _initialized;
 
-			/// <summary>The partial type catalogs.</summary>
-			private List<TypeCatalog> _catalogs;
+            /// <summary>The partial type catalogs.</summary>
+            private List<TypeCatalog> _catalogs;
 
-			/// <summary>The parts.</summary>
-			private List<ComposablePartDefinition> _parts;
+            /// <summary>The parts.</summary>
+            private List<ComposablePartDefinition> _parts;
 
-			#endregion
+            #endregion
 
-			#region constructor
+            #region constructor
 
-			/// <summary>
-			///     Initializes a new instance of the <see cref="LibZCatalog" /> class.
-			/// </summary>
-			/// <param name="reader">The reader.</param>
-			public LibZCatalog(LibZReader reader)
-			{
-				_reader = reader;
-			}
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="LibZCatalog" /> class.
+            /// </summary>
+            /// <param name="reader">The reader.</param>
+            public LibZCatalog(LibZReader reader)
+            {
+                _reader = reader;
+            }
 
-			/// <summary>Initializes this instance. Deffers querying assemblies until it is actually needed.</summary>
-			private void Initialize()
-			{
-				if (Interlocked.CompareExchange(ref _initialized, 1, 0) != 0)
-					return;
-				_catalogs = new List<TypeCatalog>();
-				_parts = new List<ComposablePartDefinition>();
+            /// <summary>Initializes this instance. Deffers querying assemblies until it is actually needed.</summary>
+            private void Initialize()
+            {
+                if (Interlocked.CompareExchange(ref _initialized, 1, 0) != 0)
+                    return;
+                _catalogs = new List<TypeCatalog>();
+                _parts = new List<ComposablePartDefinition>();
 
-				if (_reader == null)
-					return;
+                if (_reader == null)
+                    return;
 
-				var assemblyNames = _reader.Entries.Select(e => e.AssemblyName).ToList();
+                var assemblyNames = _reader.Entries.Select(e => e.AssemblyName).ToList();
 
-				foreach (var assemblyName in assemblyNames)
-				{
-					try
-					{
-						_catalogs.Add(new TypeCatalog(Assembly.Load(assemblyName).GetTypes()));
-					}
-					catch (Exception e)
-					{
-						Helpers.Error(string.Format("Could not load catalog for '{0}'", assemblyName));
-						Helpers.Error(e);
-					}
-				}
+                foreach (var assemblyName in assemblyNames)
+                {
+                    try
+                    {
+                        _catalogs.Add(new TypeCatalog(Assembly.Load(assemblyName).GetTypes()));
+                    }
+                    catch (Exception e)
+                    {
+                        Helpers.Error(string.Format("Could not load catalog for '{0}'", assemblyName));
+                        Helpers.Error(e);
+                    }
+                }
 
-				_parts.AddRange(_catalogs.SelectMany(c => c.Parts));
-			}
+                _parts.AddRange(_catalogs.SelectMany(c => c.Parts));
+            }
 
-			#endregion
+            #endregion
 
-			#region overrides
+            #region overrides
 
-			/// <summary>Gets the part definitions that are contained in the catalog.</summary>
-			/// <returns>
-			///     The <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartDefinition" />
-			///     contained in the <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog" />.
-			/// </returns>
-			public override IQueryable<ComposablePartDefinition> Parts
-			{
-				get
-				{
-					Initialize();
-					return _parts.AsQueryable();
-				}
-			}
+            /// <summary>Gets the part definitions that are contained in the catalog.</summary>
+            /// <returns>
+            ///     The <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartDefinition" />
+            ///     contained in the <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog" />.
+            /// </returns>
+            public override IQueryable<ComposablePartDefinition> Parts
+            {
+                get
+                {
+                    Initialize();
+                    return _parts.AsQueryable();
+                }
+            }
 
-			/// <summary>
-			///     Gets a list of export definitions that match the constraint defined by the specified
-			///     <see cref="T:System.ComponentModel.Composition.Primitives.ImportDefinition" /> object.
-			/// </summary>
-			/// <param name="definition">
-			///     The conditions of the
-			///     <see cref="T:System.ComponentModel.Composition.Primitives.ExportDefinition" />
-			///     objects to be returned.
-			/// </param>
-			/// <returns>
-			///     A collection of <see cref="T:System.Tuple`2" /> containing the
-			///     <see cref="T:System.ComponentModel.Composition.Primitives.ExportDefinition" /> objects
-			///     and their associated <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartDefinition" />
-			///     objects for objects that match the constraint specified by <paramref name="definition" />.
-			/// </returns>
-			public override IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition)
-			{
-				Initialize();
-				return _catalogs.SelectMany(c => c.GetExports(definition));
-			}
+            /// <summary>
+            ///     Gets a list of export definitions that match the constraint defined by the specified
+            ///     <see cref="T:System.ComponentModel.Composition.Primitives.ImportDefinition" /> object.
+            /// </summary>
+            /// <param name="definition">
+            ///     The conditions of the
+            ///     <see cref="T:System.ComponentModel.Composition.Primitives.ExportDefinition" />
+            ///     objects to be returned.
+            /// </param>
+            /// <returns>
+            ///     A collection of <see cref="T:System.Tuple`2" /> containing the
+            ///     <see cref="T:System.ComponentModel.Composition.Primitives.ExportDefinition" /> objects
+            ///     and their associated <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartDefinition" />
+            ///     objects for objects that match the constraint specified by <paramref name="definition" />.
+            /// </returns>
+            public override IEnumerable<Tuple<ComposablePartDefinition, ExportDefinition>> GetExports(ImportDefinition definition)
+            {
+                Initialize();
+                return _catalogs.SelectMany(c => c.GetExports(definition));
+            }
 
-			#endregion
-		}
+            #endregion
+        }
 
 #endif
 
-		#endregion
+        #endregion
 
-		#region class GlobalDictionary
+        #region class GlobalDictionary
 
-		/// <summary>Dictionary accessible from whole AppDomain.</summary>
-		internal class GlobalDictionary
-		{
-			#region fields
+        /// <summary>Dictionary accessible from whole AppDomain.</summary>
+        internal class GlobalDictionary
+        {
+            #region fields
 
-			/// <summary>Actual data.</summary>
-			private readonly Dictionary<int, object> _data;
+            /// <summary>Actual data.</summary>
+            private readonly Dictionary<int, object> _data;
 
-			#endregion
+            #endregion
 
-			#region constructor
+            #region constructor
 
-			/// <summary>
-			///     Initializes a new instance of the <see cref="GlobalDictionary" /> class.
-			/// </summary>
-			/// <param name="dictionaryName">Name of the dictionary.</param>
-			public GlobalDictionary(string dictionaryName)
-			{
-				lock (typeof(object))
-				{
-					_data = AppDomain.CurrentDomain.GetData(dictionaryName) as Dictionary<int, object>;
-					if (_data != null)
-						return;
+            /// <summary>
+            ///     Initializes a new instance of the <see cref="GlobalDictionary" /> class.
+            /// </summary>
+            /// <param name="dictionaryName">Name of the dictionary.</param>
+            public GlobalDictionary(string dictionaryName)
+            {
+                lock (typeof(object))
+                {
+                    _data = AppDomain.CurrentDomain.GetData(dictionaryName) as Dictionary<int, object>;
+                    if (_data != null)
+                        return;
 
-					_data = new Dictionary<int, object>();
-					AppDomain.CurrentDomain.SetData(dictionaryName, _data);
-					IsOwner = true;
-				}
-			}
+                    _data = new Dictionary<int, object>();
+                    AppDomain.CurrentDomain.SetData(dictionaryName, _data);
+                    IsOwner = true;
+                }
+            }
 
-			#endregion
+            #endregion
 
-			#region public interface
+            #region public interface
 
-			/// <summary>Gets a value indicating whether this instance owns the dictionary.</summary>
-			/// <value>
-			///     <c>true</c> if this instance owns the dictionary; otherwise, <c>false</c>.
-			/// </value>
-			public bool IsOwner { get; private set; }
+            /// <summary>Gets a value indicating whether this instance owns the dictionary.</summary>
+            /// <value>
+            ///     <c>true</c> if this instance owns the dictionary; otherwise, <c>false</c>.
+            /// </value>
+            public bool IsOwner { get; private set; }
 
-			/// <summary>Gets the value in specified slot.</summary>
-			/// <typeparam name="T">Type of slot.</typeparam>
-			/// <param name="slot">The slot.</param>
-			/// <param name="defaultValue">The default value.</param>
-			/// <returns>
-			///     Value stored in slot or <paramref name="defaultValue" />
-			/// </returns>
-			public T Get<T>(int slot, T defaultValue = default (T))
-			{
-				object result;
-				if (!_data.TryGetValue(slot, out result))
-					return defaultValue;
-				return (T)result;
-			}
+            /// <summary>Gets the value in specified slot.</summary>
+            /// <typeparam name="T">Type of slot.</typeparam>
+            /// <param name="slot">The slot.</param>
+            /// <param name="defaultValue">The default value.</param>
+            /// <returns>
+            ///     Value stored in slot or <paramref name="defaultValue" />
+            /// </returns>
+            public T Get<T>(int slot, T defaultValue = default(T))
+            {
+                object result;
+                if (!_data.TryGetValue(slot, out result))
+                    return defaultValue;
+                return (T)result;
+            }
 
-			/// <summary>Sets the value in specified slot.</summary>
-			/// <param name="slot">The slot.</param>
-			/// <param name="value">The value.</param>
-			public void Set(int slot, object value)
-			{
-				_data[slot] = value;
-			}
+            /// <summary>Sets the value in specified slot.</summary>
+            /// <param name="slot">The slot.</param>
+            /// <param name="value">The value.</param>
+            public void Set(int slot, object value)
+            {
+                _data[slot] = value;
+            }
 
-			#endregion
-		}
+            #endregion
+        }
 
-		#endregion
+        #endregion
 
-		#region class Hash
+        #region class Hash
 
-		/// <summary>MD5 calculator.</summary>
-		internal class Hash
-		{
-			#region public interface
+        /// <summary>Hash calculator.</summary>
+        internal class Hash
+        {
+            #region public interface
 
-			/// <summary>Computes the MD5 for specified byte array.</summary>
-			/// <param name="bytes">The bytes.</param>
-			/// <returns>MD5.</returns>
-			public static Guid Get(byte[] bytes)
-			{
-				return new Guid(MD5.Create().ComputeHash(bytes));
-			}
+            /// <summary>
+            /// Computes a guid based on the SHA-1 hash for specified
+            /// byte array.
+            /// </summary>
+            /// <param name="bytes">The bytes.</param>
+            /// <returns>Guid.</returns>
+            public static Guid Get(byte[] bytes)
+            {
+                return Create(bytes);
+            }
 
-			/// <summary>Computes MD5 for the specified text (case insensitive).</summary>
-			/// <param name="text">The text.</param>
-			/// <returns>MD5.</returns>
-			public static Guid Get(string text)
-			{
-				return Get(Encoding.UTF8.GetBytes(text.ToLowerInvariant()));
-			}
+            /// <summary>
+            /// Computes a guid based on the SHA-1 for the specified
+            /// text (case insensitive).
+            /// </summary>
+            /// <param name="text">The text.</param>
+            /// <returns>Guid.</returns>
+            public static Guid Get(string text)
+            {
+                return Get(Encoding.UTF8.GetBytes(text.ToLowerInvariant()));
+            }
 
-			#endregion
-		}
+            #endregion
 
-		#endregion
+            protected static Guid Create(string name)
+            {
+                if (name == null)
+                    throw new ArgumentNullException("name");
 
-		#region Helpers
+                // convert the name to a sequence of octets (as defined by the standard or conventions of its namespace) (step 3)
+                // ASSUME: UTF-8 encoding is always appropriate
+                byte[] nameBytes = Encoding.UTF8.GetBytes(name);
 
-		/// <summary>Simple helper functions.</summary>
-		public static class Helpers
-		{
-			#region consts
+                return Create(nameBytes);
+            }
 
-			/// <summary>Trace key path.</summary>
-			public const string REGISTRY_KEY_PATH = @"Software\Softpark\LibZ";
+            /// <summary>
+            /// Creates a name-based UUID using the algorithm from RFC 4122 §4.3.
+            /// </summary>
+            /// <param name="name">The name (within that namespace).</param>
+            /// Fixed to use a GUID version of 5 (for SHA-1 hashing).</param>
+            /// <returns>A UUID derived from the namespace and name.</returns>
+            /// <remarks>See <a href="http://code.logos.com/blog/2011/04/generating_a_deterministic_guid.html">Generating a deterministic GUID</a>.</remarks>
+            protected static Guid Create(byte[] nameBytes)
+            {
+                // Use SHA1.
+                var version = 5;
 
-			/// <summary>Trace key name.</summary>
-			public const string REGISTRY_KEY_NAME = @"Trace";
+                // Pick one of the Namespaces, none match real well.
+                var namespaceId = IsoOidNamespace;
 
-			/// <summary>This assembly</summary>
-			private static readonly Assembly ThisAssembly = typeof(Helpers).Assembly;
+                // convert the namespace UUID to network order (step 3)
+                byte[] namespaceBytes = namespaceId.ToByteArray();
+                SwapByteOrder(namespaceBytes);
 
-			/// <summary>This assembly name</summary>
-			private static readonly string ThisAssemblyName = ThisAssembly.GetName().Name;
+                // comput the hash of the name space ID concatenated with the name (step 4)
+                byte[] hash;
+                using (HashAlgorithm algorithm = version == 3 ? (HashAlgorithm)MD5.Create() : SHA1.Create())
+                {
+                    algorithm.TransformBlock(namespaceBytes, 0, namespaceBytes.Length, null, 0);
+                    algorithm.TransformFinalBlock(nameBytes, 0, nameBytes.Length);
+                    hash = algorithm.Hash;
+                }
 
-			/// <summary>Flag indicating if Trace should be used.</summary>
-			private static readonly bool UseTrace;
+                // most bytes from the hash are copied straight to the bytes of the new GUID (steps 5-7, 9, 11-12)
+                byte[] newGuid = new byte[16];
+                Array.Copy(hash, 0, newGuid, 0, 16);
 
-			#endregion
+                // set the four most significant bits (bits 12 through 15) of the time_hi_and_version field to the appropriate 4-bit version number from Section 4.1.3 (step 8)
+                newGuid[6] = (byte)((newGuid[6] & 0x0F) | (version << 4));
 
-			/// <summary>Initializes the <see cref="Helpers"/> class.</summary>
-			static Helpers()
-			{
-				var value =
-					GetRegistryDWORD(Registry.CurrentUser, REGISTRY_KEY_PATH, REGISTRY_KEY_NAME) ??
-						GetRegistryDWORD(Registry.LocalMachine, REGISTRY_KEY_PATH, REGISTRY_KEY_NAME) ??
-							0;
-				UseTrace = value != 0;
-			}
+                // set the two most significant bits (bits 6 and 7) of the clock_seq_hi_and_reserved to zero and one, respectively (step 10)
+                newGuid[8] = (byte)((newGuid[8] & 0x3F) | 0x80);
 
-			/// <summary>Gets bool value from registry.</summary>
-			/// <param name="root">The root key.</param>
-			/// <param name="path">The path to key.</param>
-			/// <param name="name">The name of value.</param>
-			/// <returns>Value of given... value.</returns>
-			private static uint? GetRegistryDWORD(RegistryKey root, string path, string name)
-			{
-				var key = root.OpenSubKey(path, false);
-				if (key == null)
-					return null;
+                // convert the resulting UUID to local byte order (step 13)
+                SwapByteOrder(newGuid);
+                return new Guid(newGuid);
+            }
 
-				var value = key.GetValue(name);
-				if (value == null)
-					return null;
+            /// <summary>
+            /// The namespace for fully-qualified domain names (from RFC 4122, Appendix C).
+            /// </summary>
+            private static readonly Guid DnsNamespace = new Guid("6ba7b810-9dad-11d1-80b4-00c04fd430c8");
 
-				try
-				{
-					return Convert.ToUInt32(value);
-				}
-				catch
-				{
-					return null;
-				}
-			}
+            /// <summary>
+            /// The namespace for URLs (from RFC 4122, Appendix C).
+            /// </summary>
+            private static readonly Guid UrlNamespace = new Guid("6ba7b811-9dad-11d1-80b4-00c04fd430c8");
 
-			/// <summary>Sends debug message.</summary>
-			/// <param name="message">The message.</param>
-			internal static void Debug(string message)
-			{
-				if (message == null || !UseTrace)
-					return;
-				Trace.TraceInformation("INFO (LibZ/{0}) {1}", ThisAssemblyName, message);
-			}
+            /// <summary>
+            /// The namespace for ISO OIDs (from RFC 4122, Appendix C).
+            /// </summary>
+            private static readonly Guid IsoOidNamespace = new Guid("6ba7b812-9dad-11d1-80b4-00c04fd430c8");
 
-			/// <summary>Sends warning message.</summary>
-			/// <param name="message">The message.</param>
-			internal static void Warn(string message)
-			{
-				if (message == null || !UseTrace)
-					return;
-				Trace.TraceWarning("WARN (LibZ/{0}) {1}", ThisAssemblyName, message);
-			}
+            /// <summary>
+            /// Converts a GUID (expressed as a byte array) to/from network order (MSB-first).
+            /// </summary>
+            /// <param name="guid"></param>
+            internal static void SwapByteOrder(byte[] guid)
+            {
+                SwapBytes(guid, 0, 3);
+                SwapBytes(guid, 1, 2);
+                SwapBytes(guid, 4, 5);
+                SwapBytes(guid, 6, 7);
+            }
 
-			/// <summary>Sends error message.</summary>
-			/// <param name="message">The message.</param>
-			/// <param name="ignored">
-			///     <c>true</c> if exception is going to be ignored,
-			///     so problem is reported as Warning instead of Error.
-			/// </param>
-			internal static void Error(string message, bool ignored = false)
-			{
-				if (message == null || !UseTrace)
-					return;
-				if (ignored)
-				{
-					Warn(message);
-				}
-				else
-				{
-					Trace.TraceError("ERROR (LibZ/{0}) {1}", ThisAssemblyName, message);
-				}
-			}
+            private static void SwapBytes(byte[] guid, int left, int right)
+            {
+                byte temp = guid[left];
+                guid[left] = guid[right];
+                guid[right] = temp;
+            }
 
-			/// <summary>Sends exception and error message.</summary>
-			/// <param name="exception">The exception.</param>
-			/// <param name="ignored">
-			///     <c>true</c> if exception is going to be ignored,
-			///     so problem is reported as Warning instead of Error.
-			/// </param>
-			internal static TException Error<TException>(TException exception, bool ignored = false)
-				where TException: Exception
-			{
-				if (exception != null)
-					Error(
-						string.Format("{0}: {1}", exception.GetType().Name, exception.Message),
-						ignored);
-				return exception;
-			}
-		}
+        }
 
-		#endregion
-	}
+        #endregion
+
+        #region Helpers
+
+        /// <summary>Simple helper functions.</summary>
+        public static class Helpers
+        {
+            #region consts
+
+            /// <summary>Trace key path.</summary>
+            public const string REGISTRY_KEY_PATH = @"Software\Softpark\LibZ";
+
+            /// <summary>Trace key name.</summary>
+            public const string REGISTRY_KEY_NAME = @"Trace";
+
+            /// <summary>This assembly</summary>
+            private static readonly Assembly ThisAssembly = typeof(Helpers).Assembly;
+
+            /// <summary>This assembly name</summary>
+            private static readonly string ThisAssemblyName = ThisAssembly.GetName().Name;
+
+            /// <summary>Flag indicating if Trace should be used.</summary>
+            private static readonly bool UseTrace;
+
+            #endregion
+
+            /// <summary>Initializes the <see cref="Helpers"/> class.</summary>
+            static Helpers()
+            {
+                var value =
+                    GetRegistryDWORD(Registry.CurrentUser, REGISTRY_KEY_PATH, REGISTRY_KEY_NAME) ??
+                        GetRegistryDWORD(Registry.LocalMachine, REGISTRY_KEY_PATH, REGISTRY_KEY_NAME) ??
+                            0;
+                UseTrace = value != 0;
+            }
+
+            /// <summary>Gets bool value from registry.</summary>
+            /// <param name="root">The root key.</param>
+            /// <param name="path">The path to key.</param>
+            /// <param name="name">The name of value.</param>
+            /// <returns>Value of given... value.</returns>
+            private static uint? GetRegistryDWORD(RegistryKey root, string path, string name)
+            {
+                var key = root.OpenSubKey(path, false);
+                if (key == null)
+                    return null;
+
+                var value = key.GetValue(name);
+                if (value == null)
+                    return null;
+
+                try
+                {
+                    return Convert.ToUInt32(value);
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+
+            /// <summary>Sends debug message.</summary>
+            /// <param name="message">The message.</param>
+            internal static void Debug(string message)
+            {
+                if (message == null || !UseTrace)
+                    return;
+                Trace.TraceInformation("INFO (LibZ/{0}) {1}", ThisAssemblyName, message);
+            }
+
+            /// <summary>Sends warning message.</summary>
+            /// <param name="message">The message.</param>
+            internal static void Warn(string message)
+            {
+                if (message == null || !UseTrace)
+                    return;
+                Trace.TraceWarning("WARN (LibZ/{0}) {1}", ThisAssemblyName, message);
+            }
+
+            /// <summary>Sends error message.</summary>
+            /// <param name="message">The message.</param>
+            /// <param name="ignored">
+            ///     <c>true</c> if exception is going to be ignored,
+            ///     so problem is reported as Warning instead of Error.
+            /// </param>
+            internal static void Error(string message, bool ignored = false)
+            {
+                if (message == null || !UseTrace)
+                    return;
+                if (ignored)
+                {
+                    Warn(message);
+                }
+                else
+                {
+                    Trace.TraceError("ERROR (LibZ/{0}) {1}", ThisAssemblyName, message);
+                }
+            }
+
+            /// <summary>Sends exception and error message.</summary>
+            /// <param name="exception">The exception.</param>
+            /// <param name="ignored">
+            ///     <c>true</c> if exception is going to be ignored,
+            ///     so problem is reported as Warning instead of Error.
+            /// </param>
+            internal static TException Error<TException>(TException exception, bool ignored = false)
+                where TException : Exception
+            {
+                if (exception != null)
+                    Error(
+                        string.Format("{0}: {1}", exception.GetType().Name, exception.Message),
+                        ignored);
+                return exception;
+            }
+        }
+
+        #endregion
+    }
 }
